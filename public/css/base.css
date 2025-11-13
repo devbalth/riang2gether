@@ -1,0 +1,429 @@
+:root {
+    --dark-blue: #4A70A9;
+    --light-blue: #acc8f1;
+    --light-grey: #E0E3E8;
+    --red-velvet: #850E35;
+    --white: #FFF;
+    --black: #000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+}
+
+main {
+    padding-top: 75px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.thumbnail-image {
+    width: 50px;
+    height: 50px;
+}
+
+.video-title,
+.video-title-play
+{
+    font-weight: bold;
+    margin: 10px 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.video-title-play {
+    text-align: left;
+}
+
+
+
+/* Navigation Bar */
+
+header#navigation {
+    background-color: var(--white);
+    position: fixed;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 3px solid var(--light-grey);
+    z-index: 1000;
+}
+
+#navigation nav .logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+#navigation nav .logo i {
+    font-size: 2rem;
+}
+
+#navigation nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#navigation nav a i.bx-menu {
+    color: var(--black);
+    font-size: 2rem;
+}
+
+#navigation nav a:visited i.bx-menu {
+    color: var(--black);
+}
+
+
+
+/* Story Moment */
+
+section.story-moment {
+    margin-top: 20px;
+}
+
+section.story-moment .story-individual {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section.story-moment .story-individual .user-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+section.story-moment .story-individual .user-avatar #me,
+section.story-moment .story-individual .user-avatar #me img
+{
+    position: relative;
+    z-index: 1;
+}
+
+section.story-moment .story-individual .user-avatar #me span {
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+    z-index: 2;
+    color: var(--white);
+    background-color: var(--dark-blue);
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 12px;
+}
+
+section.story-moment .story-individual .user-avatar p {
+    font-size: 0.8rem;
+}
+
+
+
+/* Story Posts */
+
+section.moment-post {
+    margin: 2rem 0;
+    padding-bottom: 100px;
+}
+
+section.moment-post .posts .user-post {
+    margin: 35px 0;
+}
+
+section.moment-post .posts .user-post .user-avatar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+section.moment-post .posts .user-post .user-avatar .thumbnail-image {
+    height: 30px;
+    width: 30px;
+}
+
+section.moment-post .posts .user-post img {
+    margin: 10px 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+section.moment-post .posts .user-post .interaction-icons i {
+    font-size: 1.5rem;
+}
+
+section.moment-post .posts .user-post .post-like-by,
+section.moment-post .posts .user-post .post-description {
+    padding: 5px 0;
+}
+
+
+
+/* Activities */
+
+section.activities-tab {
+    margin-top: 20px;
+    margin-bottom: 2rem;
+}
+
+section.activities-tab .search {
+    margin-bottom: 20px;
+}
+
+section.activities-tab .search input {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+section.activities-tab header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section.activities-tab header a {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    width: 100%;
+    padding: 1.5rem 0;
+    margin: 0 5px;
+}
+
+section.activities-tab header a .step-tracker,
+section.activities-tab header a .leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section.activities-tab header a i {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+
+
+/* Workout Videos */
+
+section.workout-videos {
+    padding-bottom: 100px;
+}
+
+section.workout-videos header h2 {
+    margin-bottom: 10px;
+}
+
+section.workout-videos .workout-video-tutorials {
+    margin: 2rem 0;
+}
+
+section.workout-videos .workout-video-tutorials .video {
+    margin-bottom: 4rem;
+}
+
+section.workout-videos .workout-video-tutorials .video img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+section.workout-videos .workout-video-tutorials .video a.play-video {
+    display: block;
+    background-color: var(--red-velvet);
+    color: var(--white);
+    padding: 0.8rem 0;
+    text-align: center;
+}
+
+
+
+/* Play Videos */
+
+section.play-videos {
+    margin-top: 20px;
+    padding-bottom: 200px;
+}
+
+section.play-videos .video iframe {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+
+
+/* Leaderboard */
+
+section.leaderboard {
+    margin-top: 20px;
+    padding-bottom: 100px;
+}
+
+section.leaderboard header h2 {
+    text-align: center;
+}
+
+section.leaderboard header hr {
+    margin: 10px 0;
+}
+
+section.leaderboard .users .players {
+    background-color: var(--light-blue);
+    border-radius: 50px;
+    padding: 1rem 0;
+    margin: 3rem 0;
+}
+
+section.leaderboard .users .players .user-avatar img {
+    width: 80px;
+    height: 80px;
+}
+
+section.leaderboard .users .players .user-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+section.leaderboard .users .players .user-avatar .player-steps .steps {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+
+
+/* Step Tracker */
+
+section.step-tracker {
+    height: 100vh;
+    background: linear-gradient(135deg, #56ccf2, #2f80ed);
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    padding-bottom: 100px;
+}
+
+.tracker {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 400px;
+    margin: 40px auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tracker h1 {
+    font-size: 2rem;
+}
+
+.steps {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.distance {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.progress {
+    height: 20px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin: 25px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #00ffb9;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #fff;
+    color: #2f80ed;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e0e0e0;
+}
+
+.status {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+.status-footer {
+    margin-top: 30px;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+
+
+
+
+/* Footer Tabs */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100px;
+    width: 100%;
+    background-color: var(--dark-blue);
+    z-index: 999;
+}
+
+footer .tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+    margin: 20px 0;
+}
+
+footer .tab-icons a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer .tab-icons i {
+    color: var(--white);
+    font-size: 40px;
+}
+
+footer .tab-icons p {
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding-top: 5px;
+    color: var(--white);
+}
