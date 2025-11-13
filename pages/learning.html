@@ -25,21 +25,51 @@
         </div>
     </header>
     <main>
-        <section class="step-tracker">
-            <div class="tracker">
-                <h1>Steptracker V1</h1>
-                <div class="steps" id="stepCount">0</div>
-                <div class="distance" id="distance">0.00 km</div>
-    
-                <div class="progress">
-                <div class="progress-bar" id="progressBar"></div>
+        <section class="activities-tab">
+            <div class="container">
+                <div class="search">
+                    <input type="text" placeholder="Search workout..">
                 </div>
-    
-                <button id="startBtn">Start Tracking</button>
-                <div class="status" id="statusText">Idle</div>
+                <header>
+                    <a href="./step-tracker.html">
+                        <div class="step-tracker">
+                            <i class='bx  bxs-footsteps'></i> 
+                            <span>Step Tracker</span>
+                        </div>
+                    </a>
+                    <a href="./leaderboard.html">
+                        <div class="leaderboard">
+                            <i class='bx  bxs-steps-down'></i> 
+                            <span>Leaderboard</span>
+                        </div>
+                    </a>
+                </header>
             </div>
-    
-            <div class="status-footer">📍 Accelerometer + GPS Step Tracker Prototype</div>
+        </section>
+        <section class="workout-videos">
+            <div class="container">
+                <header>
+                    <h2>Popular Workout</h2>
+                    <hr>
+                </header>
+                <div class="workout-video-tutorials">
+                    <div class="video">
+                        <img src="../assets/image/thumbnail-1.png" alt="">
+                        <p class="video-title">20-minute Indoor Walking Workout for Seniors</p>
+                        <a href="./workout-1.html" class="play-video">Play Video</a>
+                    </div>
+                    <div class="video">
+                        <img src="../assets/image/thumbnail-2.png" alt="">
+                        <p class="video-title">25 Minute Exercise Routine For Seniors Over 60</p>
+                        <a href="./workout-2.html" class="play-video">Play Video</a>
+                    </div>
+                    <div class="video">
+                        <img src="../assets/image/thumbnail-3.png" alt="">
+                        <p class="video-title">30 Min Japanese 3x3 Walking Exercise</p>
+                        <a href="./workout-3.html" class="play-video">Play Video</a>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
@@ -58,7 +88,7 @@
                     </a>
                 </div>
                 <div class="tab-icons">
-                    <a href="./learning.html">
+                    <a href="#">
                         <i class='bx  bx-reading'></i> 
                         <p>Learning</p>
                     </a>
@@ -72,6 +102,5 @@
             </div>
         </div>
     </footer>
-    <script src="../public/scripts/step-tracker.js"></script>
 </body>
 </html>
