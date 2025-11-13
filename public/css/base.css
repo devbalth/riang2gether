@@ -172,30 +172,39 @@ section.moment-post .posts .user-post .post-description {
 
 
 
-/* Activities */
+/* Activities & Learning */
 
-section.activities-tab {
+section.activities-tab,
+section.learning-tab
+{
     margin-top: 20px;
     margin-bottom: 2rem;
 }
 
-section.activities-tab .search {
+section.activities-tab .search,
+section.learning-tab .search 
+{
     margin-bottom: 20px;
 }
 
-section.activities-tab .search input {
+section.activities-tab .search input,
+section.learning-tab .search input 
+{
     width: 100%;
     font-size: 1rem;
     padding: 0.5rem;
 }
 
-section.activities-tab header {
+section.activities-tab header,
+section.learning-tab header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-section.activities-tab header a {
+section.activities-tab header a,
+section.learning-tab header a 
+{
     background-color: var(--dark-blue);
     color: var(--white);
     width: 100%;
@@ -204,13 +213,16 @@ section.activities-tab header a {
 }
 
 section.activities-tab header a .step-tracker,
-section.activities-tab header a .leaderboard {
+section.activities-tab header a .leaderboard,
+section.learning-tab header a .premium-course
+{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-section.activities-tab header a i {
+section.activities-tab header a i,
+section.learning-tab header a i {
     margin-right: 10px;
     margin-bottom: 10px;
     font-size: 1.5rem;
@@ -220,29 +232,40 @@ section.activities-tab header a i {
 
 /* Workout Videos */
 
-section.workout-videos {
+section.workout-videos, 
+section.learning-videos 
+{
     padding-bottom: 100px;
 }
 
-section.workout-videos header h2 {
+section.workout-videos header h2,
+section.learning-videos header h2 
+{
     margin-bottom: 10px;
 }
 
-section.workout-videos .workout-video-tutorials {
+section.workout-videos .workout-video-tutorials,
+section.learning-videos .learning-video-tutorials {
     margin: 2rem 0;
 }
 
-section.workout-videos .workout-video-tutorials .video {
+section.workout-videos .workout-video-tutorials .video,
+section.learning-videos .learning-video-tutorials .video
+{
     margin-bottom: 4rem;
 }
 
-section.workout-videos .workout-video-tutorials .video img {
+section.workout-videos .workout-video-tutorials .video img,
+section.learning-videos .learning-video-tutorials .video img
+{
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
 
-section.workout-videos .workout-video-tutorials .video a.play-video {
+section.workout-videos .workout-video-tutorials .video a.play-video,
+section.learning-videos .learning-video-tutorials .video a.play-video
+{
     display: block;
     background-color: var(--red-velvet);
     color: var(--white);
