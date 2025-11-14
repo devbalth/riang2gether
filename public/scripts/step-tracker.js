@@ -5,8 +5,12 @@ let tracking = false;
 let lastPosition = null;
 let watchId = null;
 
-const STEP_LENGTH = 0.78; // average real-world walking stride (Fitbit range)
+const STEP_LENGTH = 0.78;
 let lastStepTime = 0;
+
+// Warm-up control
+let motionStartTime = 0;
+const WARMUP_TIME = 1000; // 1 second ignore period
 
 // UI elements
 const stepCountEl = document.getElementById("stepCount");
@@ -21,19 +25,20 @@ function updateUI() {
     progressBar.style.width = Math.min((steps / goal) * 100, 100) + "%";
 }
 
-// ----------------------------
-// GPS / Haversine
-// ----------------------------
+// GPS functions
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3;
     const toRad = deg => (deg * Math.PI) / 180;
+
     const φ1 = toRad(lat1);
     const φ2 = toRad(lat2);
     const Δφ = toRad(lat2 - lat1);
     const Δλ = toRad(lon2 - lon1);
+
     const a =
         Math.sin(Δφ / 2) ** 2 +
         Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
@@ -41,13 +46,7 @@ function handlePosition(position) {
     const { latitude, longitude } = position.coords;
 
     if (lastPosition) {
-        const d = getDistance(
-            lastPosition.lat,
-            lastPosition.lon,
-            latitude,
-            longitude
-        );
-
+        const d = getDistance(lastPosition.lat, lastPosition.lon, latitude, longitude);
         if (d > 2) {
             distance += d;
             updateUI();
@@ -55,68 +54,60 @@ function handlePosition(position) {
     }
 
     lastPosition = { lat: latitude, lon: longitude };
-    statusText.textContent = `GPS: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-}
-
-function handleError(err) {
-    statusText.textContent = "GPS error: " + err.message;
+    statusText.textContent = `GPS: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
 }
 
 // ------------------------------------------------------
-// 🚀 FITBIT-LEVEL STEP DETECTION ENGINE
+// STEP DETECTION (Fitbit-like)
 // ------------------------------------------------------
 async function startStepSensor() {
 
-    // iOS Permission (must be inside a click)
+    // Reset filters on each start
+    let hpX = 0, hpY = 0, hpZ = 0;
+    let smooth = 0;
+    let avgPeak = 1.0;
+    let lastAccel = 0;
+
+    motionStartTime = Date.now(); // begin warm-up
+
     if (typeof DeviceMotionEvent.requestPermission === "function") {
-        try {
-            const result = await DeviceMotionEvent.requestPermission();
-            if (result !== "granted") {
-                alert("Motion permission denied.");
-                return;
-            }
-        } catch (e) {
-            alert("Motion sensor error.");
+        const result = await DeviceMotionEvent.requestPermission();
+        if (result !== "granted") {
+            alert("Motion permission denied.");
             return;
         }
     }
 
-    let lastAccel = 0;
-
-    // High-pass filter (remove gravity)
-    let hpX = 0, hpY = 0, hpZ = 0;
-    const HP_ALPHA = 0.90; // bigger = more gravity removed
-
-    // Low-pass smoothing (EMA)
-    let smooth = 0;
+    const HP_ALPHA = 0.90;
     const LP_ALPHA = 0.25;
-
-    // Dynamic thresholding (automatically adjusts like Fitbit)
-    let threshold = 1.0;  // starting threshold
-    let avgPeak = 1.0;
 
     window.addEventListener("devicemotion", (event) => {
         const a = event.accelerationIncludingGravity;
         if (!a) return;
 
-        // High-pass filter – remove gravity (Fitbit uses similar method)
+        // Ignore first 1 second of readings — prevent fake steps
+        if (Date.now() - motionStartTime < WARMUP_TIME) {
+            lastAccel = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
+            return;
+        }
+
+        // High-pass filter
         hpX = HP_ALPHA * (hpX + a.x - lastAccel);
         hpY = HP_ALPHA * (hpY + a.y - lastAccel);
         hpZ = HP_ALPHA * (hpZ + a.z - lastAccel);
 
-        // Magnitude after filtering
         const mag = Math.sqrt(hpX * hpX + hpY * hpY + hpZ * hpZ);
 
-        // Smooth (low-pass)
+        // Low-pass smoothing
         smooth = LP_ALPHA * mag + (1 - LP_ALPHA) * smooth;
 
-        // Dynamically adjust threshold
+        // Dynamic threshold
         avgPeak = avgPeak * 0.98 + smooth * 0.02;
-        const dynamicThreshold = avgPeak * 1.25; // Peak must exceed average noise
+        const threshold = avgPeak * 1.25;
 
-        // STEP DETECT
+        // Step detection (no false early triggers)
         if (
-            smooth > dynamicThreshold &&
+            smooth > threshold &&
             Date.now() - lastStepTime > 350
         ) {
             steps++;
@@ -132,22 +123,22 @@ async function startStepSensor() {
 }
 
 // ------------------------------------------------------
-// Start/Stop tracking button
+// Start/Stop button
 // ------------------------------------------------------
 startBtn.addEventListener("click", async () => {
-
     if (tracking) {
         tracking = false;
         startBtn.textContent = "Start Tracking";
         statusText.textContent = "Stopped";
-
         if (watchId) navigator.geolocation.clearWatch(watchId);
         return;
     }
 
     tracking = true;
     startBtn.textContent = "Stop Tracking";
-    statusText.textContent = "Requesting permissions...";
+    statusText.textContent = "Initializing sensors…";
+
+    steps = steps; // keep step count but prevent jump
 
     await startStepSensor();
 
@@ -157,8 +148,6 @@ startBtn.addEventListener("click", async () => {
             maximumAge: 1000,
             timeout: 10000
         });
-    } else {
-        alert("Geolocation not supported.");
     }
 });
 
