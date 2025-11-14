@@ -5,30 +5,25 @@ let tracking = false;
 let lastPosition = null;
 let watchId = null;
 
-const STEP_LENGTH = 0.8; // meters per step
+const STEP_LENGTH = 0.78; // average real-world walking stride (Fitbit range)
 let lastStepTime = 0;
 
-// UI Elements
+// UI elements
 const stepCountEl = document.getElementById("stepCount");
 const distanceEl = document.getElementById("distance");
 const progressBar = document.getElementById("progressBar");
 const startBtn = document.getElementById("startBtn");
 const statusText = document.getElementById("statusText");
 
-// -------------------------
-// UI UPDATE FUNCTION
-// -------------------------
 function updateUI() {
     stepCountEl.textContent = steps;
-    const km = (distance / 1000).toFixed(2);
-    distanceEl.textContent = `${km} km`;
-    const progress = Math.min((steps / goal) * 100, 100);
-    progressBar.style.width = progress + "%";
+    distanceEl.textContent = (distance / 1000).toFixed(2) + " km";
+    progressBar.style.width = Math.min((steps / goal) * 100, 100) + "%";
 }
 
-// -------------------------
-// HAVERSINE DISTANCE
-// -------------------------
+// ----------------------------
+// GPS / Haversine
+// ----------------------------
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3;
     const toRad = deg => (deg * Math.PI) / 180;
@@ -39,13 +34,9 @@ function getDistance(lat1, lon1, lat2, lon2) {
     const a =
         Math.sin(Δφ / 2) ** 2 +
         Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
-// -------------------------
-// GPS POSITION HANDLING
-// -------------------------
 function handlePosition(position) {
     const { latitude, longitude } = position.coords;
 
@@ -57,7 +48,6 @@ function handlePosition(position) {
             longitude
         );
 
-        // Ignore jitter < 2m
         if (d > 2) {
             distance += d;
             updateUI();
@@ -65,136 +55,110 @@ function handlePosition(position) {
     }
 
     lastPosition = { lat: latitude, lon: longitude };
-    statusText.textContent = `Tracking... (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`;
+    statusText.textContent = `GPS: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
 }
 
 function handleError(err) {
     statusText.textContent = "GPS error: " + err.message;
 }
 
-// -------------------------
-// STEP SENSOR (FALLBACK + PERMISSIONS)
-// -------------------------
+// ------------------------------------------------------
+// 🚀 FITBIT-LEVEL STEP DETECTION ENGINE
+// ------------------------------------------------------
 async function startStepSensor() {
-    // -------------------------
-    // 1. Generic Sensor API (rarely supported)
-    // -------------------------
-    if ("LinearAccelerationSensor" in window) {
+
+    // iOS Permission (must be inside a click)
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
         try {
-            const sensor = new LinearAccelerationSensor({ frequency: 60 });
-            let lastAccel = 0;
-
-            sensor.addEventListener("reading", () => {
-                const totalAccel = Math.sqrt(
-                    sensor.x ** 2 + sensor.y ** 2 + sensor.z ** 2
-                );
-
-                if (
-                    totalAccel > 3 &&
-                    lastAccel <= 3 &&
-                    Date.now() - lastStepTime > 250
-                ) {
-                    steps++;
-                    lastStepTime = Date.now();
-                    distance += STEP_LENGTH;
-                    updateUI();
-                }
-
-                lastAccel = totalAccel;
-            });
-
-            sensor.addEventListener("error", e => {
-                statusText.textContent = "Accelerometer error: " + e.error;
-            });
-
-            sensor.start();
-            statusText.textContent = "Accelerometer active";
-            return;
-        } catch (e) {
-            statusText.textContent = "Accelerometer not supported.";
-        }
-    }
-
-    // -------------------------
-    // 2. DeviceMotion API with iOS permission
-    // -------------------------
-    if ("DeviceMotionEvent" in window) {
-        // iOS Motion Permission
-        if (typeof DeviceMotionEvent.requestPermission === "function") {
-            try {
-                const permission = await DeviceMotionEvent.requestPermission();
-                if (permission !== "granted") {
-                    statusText.textContent = "Motion permission denied";
-                    return;
-                }
-            } catch (err) {
-                statusText.textContent = "Motion permission error";
+            const result = await DeviceMotionEvent.requestPermission();
+            if (result !== "granted") {
+                alert("Motion permission denied.");
                 return;
             }
+        } catch (e) {
+            alert("Motion sensor error.");
+            return;
         }
-
-        // Now we can listen for motion events
-        let lastAccel = 0;
-
-        window.addEventListener("devicemotion", event => {
-            const a = event.accelerationIncludingGravity;
-            if (!a) return;
-
-            const totalAccel = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
-
-            // Peak detection
-            if (
-                totalAccel > 3 &&
-                lastAccel <= 3 &&
-                Date.now() - lastStepTime > 250
-            ) {
-                steps++;
-                lastStepTime = Date.now();
-                distance += STEP_LENGTH;
-                updateUI();
-            }
-
-            lastAccel = totalAccel;
-        });
-
-        statusText.textContent = "DeviceMotion active";
-        return;
     }
 
-    alert("This device does not support motion sensors.");
+    let lastAccel = 0;
+
+    // High-pass filter (remove gravity)
+    let hpX = 0, hpY = 0, hpZ = 0;
+    const HP_ALPHA = 0.90; // bigger = more gravity removed
+
+    // Low-pass smoothing (EMA)
+    let smooth = 0;
+    const LP_ALPHA = 0.25;
+
+    // Dynamic thresholding (automatically adjusts like Fitbit)
+    let threshold = 1.0;  // starting threshold
+    let avgPeak = 1.0;
+
+    window.addEventListener("devicemotion", (event) => {
+        const a = event.accelerationIncludingGravity;
+        if (!a) return;
+
+        // High-pass filter – remove gravity (Fitbit uses similar method)
+        hpX = HP_ALPHA * (hpX + a.x - lastAccel);
+        hpY = HP_ALPHA * (hpY + a.y - lastAccel);
+        hpZ = HP_ALPHA * (hpZ + a.z - lastAccel);
+
+        // Magnitude after filtering
+        const mag = Math.sqrt(hpX * hpX + hpY * hpY + hpZ * hpZ);
+
+        // Smooth (low-pass)
+        smooth = LP_ALPHA * mag + (1 - LP_ALPHA) * smooth;
+
+        // Dynamically adjust threshold
+        avgPeak = avgPeak * 0.98 + smooth * 0.02;
+        const dynamicThreshold = avgPeak * 1.25; // Peak must exceed average noise
+
+        // STEP DETECT
+        if (
+            smooth > dynamicThreshold &&
+            Date.now() - lastStepTime > 350
+        ) {
+            steps++;
+            lastStepTime = Date.now();
+            distance += STEP_LENGTH;
+            updateUI();
+        }
+
+        lastAccel = mag;
+    });
+
+    statusText.textContent = "Motion sensor active";
 }
 
-// -------------------------
-// START/STOP BUTTON
-// -------------------------
-startBtn.addEventListener("click", () => {
+// ------------------------------------------------------
+// Start/Stop tracking button
+// ------------------------------------------------------
+startBtn.addEventListener("click", async () => {
+
     if (tracking) {
         tracking = false;
         startBtn.textContent = "Start Tracking";
         statusText.textContent = "Stopped";
 
-        if (watchId) {
-            navigator.geolocation.clearWatch(watchId);
-        }
+        if (watchId) navigator.geolocation.clearWatch(watchId);
+        return;
+    }
 
+    tracking = true;
+    startBtn.textContent = "Stop Tracking";
+    statusText.textContent = "Requesting permissions...";
+
+    await startStepSensor();
+
+    if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
+            enableHighAccuracy: true,
+            maximumAge: 1000,
+            timeout: 10000
+        });
     } else {
-        tracking = true;
-        startBtn.textContent = "Stop Tracking";
-        statusText.textContent = "Requesting permissions...";
-
-        // Enable step detection
-        startStepSensor();
-
-        // GPS Tracking
-        if (navigator.geolocation) {
-            watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
-                enableHighAccuracy: true,
-                maximumAge: 1000,
-                timeout: 10000
-            });
-        } else {
-            alert("Geolocation not supported on this device.");
-        }
+        alert("Geolocation not supported.");
     }
 });
 
