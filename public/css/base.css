@@ -175,20 +175,23 @@ section.moment-post .posts .user-post .post-description {
 /* Activities & Learning */
 
 section.activities-tab,
-section.learning-tab
+section.learning-tab,
+section.communities-tab
 {
     margin-top: 20px;
     margin-bottom: 2rem;
 }
 
 section.activities-tab .search,
-section.learning-tab .search 
+section.learning-tab .search, 
+section.communities-tab .search 
 {
     margin-bottom: 20px;
 }
 
 section.activities-tab .search input,
-section.learning-tab .search input 
+section.learning-tab .search input, 
+section.communities-tab .search input 
 {
     width: 100%;
     font-size: 1rem;
@@ -196,14 +199,17 @@ section.learning-tab .search input
 }
 
 section.activities-tab header,
-section.learning-tab header {
+section.learning-tab header,
+section.communities-tab header
+{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 section.activities-tab header a,
-section.learning-tab header a 
+section.learning-tab header a,
+section.communities-tab header a
 {
     background-color: var(--dark-blue);
     color: var(--white);
@@ -214,7 +220,9 @@ section.learning-tab header a
 
 section.activities-tab header a .step-tracker,
 section.activities-tab header a .leaderboard,
-section.learning-tab header a .premium-course
+section.learning-tab header a .premium-course,
+section.communities-tab header a .explore-groups,
+section.communities-tab header a .explore-events
 {
     display: flex;
     flex-direction: column;
@@ -222,8 +230,9 @@ section.learning-tab header a .premium-course
 }
 
 section.activities-tab header a i,
-section.learning-tab header a i {
-    margin-right: 10px;
+section.learning-tab header a i,
+section.communities-tab header a i 
+{
     margin-bottom: 10px;
     font-size: 1.5rem;
 }
@@ -233,13 +242,15 @@ section.learning-tab header a i {
 /* Workout Videos */
 
 section.workout-videos, 
-section.learning-videos 
+section.learning-videos, 
+section.communities-join
 {
     padding-bottom: 100px;
 }
 
 section.workout-videos header h2,
-section.learning-videos header h2 
+section.learning-videos header h2,
+section.communities-join header h2
 {
     margin-bottom: 10px;
 }
@@ -407,6 +418,39 @@ button:hover {
     margin-top: 30px;
     font-size: 0.8em;
     opacity: 0.7;
+}
+
+
+
+/* Joined Group */
+
+section.communities-join .community-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+section.communities-join .community-content .community-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px 0;
+    background-color: var(--light-blue);
+    width: 100%;
+}
+
+section.communities-join .community-content .community-box h2 {
+    margin-bottom: 20px;
+}
+
+section.communities-join .community-content .community-box a {
+    display: inline-block;
+    color: var(--white);
+    background-color: var(--dark-blue);
+    padding: 15px 100px;
 }
 
 
