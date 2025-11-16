@@ -8,16 +8,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="shortcut icon" href="./assets/logo/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./public/css/base.css">
 </head>
 <body>
     <header id="navigation">
         <div class="container">
             <nav>
-                <div class="logo">
-                        <i class='bx bx-walking'></i> 
-                        <p>Riang2gether</p>
-                </div>
+                <a href="./index.html">
+                    <div class="logo">
+                            <img src="./assets/logo/riang2gether logo.png" alt="riang2gether logo" class="riang2gether-logo">
+                    </div>
+                </a>
                 <a href="#">
                     <i class='bx bx-menu'></i> 
                 </a>
@@ -30,9 +32,8 @@
                 <div class="story-friends">
                     <div class="story-individual">
                         <div class="user-avatar">
-                            <div id="me">
-                                <img src="./assets/avatar/avatar-2.png" alt="" class="thumbnail-image" id="default-user">
-                                <span>+</span>
+                            <div class="user-avatar">
+                                <img src="./assets/avatar/avatar-2.png" alt="" class="thumbnail-image">
                             </div>
                             <p>Me</p>
                         </div>
@@ -64,9 +65,9 @@
                             <img src="./assets/avatar/avatar-4.png" alt="" class="thumbnail-image">
                             <p>Ming Li</p>
                         </div>
-                        <img src="./assets/image/exercise-1.jpg" alt="">
+                        <img src="./assets/image/exercise-1.jpg" alt="" class="image-photo-thumbnail">
                         <div class="interaction-icons">
-                            <i class='bx  bxs-like'></i> 
+                            <i class='bx bxs-like'></i>
                             <i class='bx  bx-message-circle'></i> 
                         </div>
                         <div class="post-like-by">
@@ -84,9 +85,9 @@
                             <img src="./assets/avatar/avatar-5.png" alt="" class="thumbnail-image">
                             <p>Freeman</p>
                         </div>
-                        <img src="./assets/image/exercise-3.jpg" alt="">
+                        <img src="./assets/image/exercise-3.jpg" alt="" class="image-photo-thumbnail">
                         <div class="interaction-icons">
-                            <i class='bx  bxs-like'></i> 
+                            <i class='bx  bxs-like'></i>
                             <i class='bx  bx-message-circle'></i> 
                         </div>
                         <div class="post-like-by">
@@ -104,9 +105,9 @@
                             <img src="./assets/avatar/avatar-1.png" alt="" class="thumbnail-image">
                             <p>Morgan</p>
                         </div>
-                        <img src="./assets/image/exercise-4.jpg" alt="">
+                        <img src="./assets/image/exercise-4.jpg" alt="" class="image-photo-thumbnail">
                         <div class="interaction-icons">
-                            <i class='bx  bxs-like'></i> 
+                            <i class='bx  bxs-like'></i>
                             <i class='bx  bx-message-circle'></i> 
                         </div>
                         <div class="post-like-by">
@@ -124,7 +125,7 @@
                             <img src="./assets/avatar/avatar-3.png" alt="" class="thumbnail-image">
                             <p>Qeebah</p>
                         </div>
-                        <img src="./assets/image/exercise-2.jpg" alt="">
+                        <img src="./assets/image/exercise-2.jpg" alt="" class="image-photo-thumbnail">
                         <div class="interaction-icons">
                             <i class='bx  bxs-like'></i> 
                             <i class='bx  bx-message-circle'></i> 
@@ -146,25 +147,25 @@
     <footer>
         <div class="container">
             <div class="tabs">
-                <div class="tab-icons">
+                <div class="tab-icons" class="selected">
                     <a href="./index.html">
                         <i class='bx  bx-photo-album'></i> 
                         <p>Moments</p>
                     </a>
                 </div>
-                <div class="tab-icons">
+                <div class="tab-icons" class="unselected">
                     <a href="./pages/activities.html">
                         <i class='bx  bx-dumbbell-alt'></i> 
                         <p>Activities</p>
                     </a>
                 </div>
-                <div class="tab-icons">
+                <div class="tab-icons" class="unselected">
                     <a href="./pages/learning.html">
                         <i class='bx  bx-reading'></i> 
                         <p>Learning</p>
                     </a>
                 </div>
-                <div class="tab-icons">
+                <div class="tab-icons" class="unselected">
                     <a href="./pages/communities.html">
                         <i class='bx  bx-community'></i> 
                         <p>Communities</p>
