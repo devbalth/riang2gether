@@ -623,6 +623,22 @@ section.communities-join .community-content .community-box a {
 
 
 
+/* Coming Soon */
+
+section.coming-soon {
+    display: block;
+    text-align: center;
+}
+
+section.coming-soon img {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    width: 250px;
+    height: 200px;
+}
+
+
+
 
 
 /* Footer Tabs */
