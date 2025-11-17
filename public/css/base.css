@@ -501,6 +501,57 @@ section.communities-join .community-content .community-box a {
 
 
 
+/* SIDE MENU */
+
+#side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background: var(--white);
+    box-shadow: 3px 0px 10px rgba(0,0,0,0.2);
+    z-index: 2000;
+    transition: left 0.3s ease;
+    padding-top: 100px;
+    text-align: center;
+}
+
+#side-menu .logo img {
+    width: 100px;
+    height: 70px;
+    margin-bottom: 50px;
+}
+
+#side-menu.open {
+    left: 0; 
+}
+
+#side-menu .side-menu-content a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    color: var(--black);
+    border-bottom: 1px solid var(--light-grey);
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1500;
+}
+
+#overlay.show {
+    display: block;
+}
+
+
+
 
 
 /* Footer Tabs */
