@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riang2gether | Communities</title>
+    <title>Riang2gether | Tai Chi Jubilee</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -27,41 +27,20 @@
         </div>
     </header>
     <main>
-        <section class="communities-tab">
-            <div class="container">
-                <div class="search">
-                    <input type="text" placeholder="Search Groups or Events..">
-                </div>
-                <header>
-                    <a href="./groups.html">
-                        <div class="explore-groups neu-button">
-                            <i class='bxr bxs-user'></i> 
-                            <span>Groups</span>
-                        </div>
-                    </a>
-                    <a href="./events.html">
-                        <div class="explore-events neu-button">
-                            <i class='bx bxs-steps-down'></i> 
-                            <span>Events</span>
-                        </div>
-                    </a>
-                </header>
-            </div>
-        </section>
-        <section class="communities-join">
+        <div class="chat-container">
             <div class="container">
                 <header>
-                    <h2>Joined Groups</h2>
+                    <h2>Tai Chi Jubilee Group</h2>
                     <hr>
                 </header>
-                <div class="community-content">
-                    <div class="community-box">
-                        <h2>Tai Chi Jubilee</h2>
-                        <a href="./tai-chi-group.html">Open Group</a>
-                    </div>
+                <div class="chat-box" id="chatBox"></div>
+    
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type a message...">
+                    <button id="sendBtn">Send</button>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
     <footer>
         <div class="container">
@@ -85,7 +64,7 @@
                     </a>
                 </div>
                 <div class="tab-icons">
-                    <a href="#">
+                    <a href="./communities.html">
                         <i class='bx  bx-community'></i> 
                         <p>Communities</p>
                     </a>
@@ -108,6 +87,7 @@
     </div>
 
     <div id="overlay"></div>
+    <script src="../public/scripts/chatgroup.js" defer></script>
     <script src="../public/scripts/menu.js" defer></script>
 </body>
 </html>
