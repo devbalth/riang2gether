@@ -540,28 +540,30 @@ section.communities-join .community-content .community-box a {
 }
 
 .chat-input {
-    display: flex;
     padding: 10px;
     background: var(--white);
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .chat-input input {
-    flex: 1;
+    display: block;
+    width: 100%;
     padding: 10px;
     border: 2px solid var(--black);
     background: var(--white);
     color: var(--black);
     outline: none;
+    margin-bottom: 20px;
 }
 
 .chat-input button {
+    display: block;
+    width: 100%;
     padding: 10px 15px;
     background: var(--dark-blue);
     color: var(--white);
     border: none;
     cursor: pointer;
-    margin-left: 5px;
 }
 
 .chat-input button:hover {
