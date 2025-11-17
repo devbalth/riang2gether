@@ -507,7 +507,7 @@ section.communities-join .community-content .community-box a {
     position: fixed;
     top: 93px;
     bottom: 100px;
-    width: 430px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     background: var(--white);
