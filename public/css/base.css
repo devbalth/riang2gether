@@ -60,6 +60,10 @@ a {
     height: 50px;
 }
 
+i.like-btn {
+    cursor: pointer;
+}
+
 
 
 /* Navigation Bar */
